@@ -1,0 +1,117 @@
+Nombre del proyecto: Píu Píu
+Autor: Valentina Lobos
+
+Profesora: Sofía Suazo
+Ayudante: Jacinta Barrenechea
+
+Fecha: 26/06/2026
+
+
+
+* Descripción objetiva
+
+¿Qué es el proyecto?
+  El proyecto consiste en un juego interactivo desarrollado en p5.js donde el jugador debe eliminar seis marcianos antes de que finalice el tiempo disponible.
+Durante la partida, los marcianos se desplazan continuamente por la pantalla y rebotan en los bordes del canvas. A medida que el tiempo disminuye, los marcianos también reducen su tamaño, aumentando la dificultad para hacer clic sobre ellos.
+El sistema utiliza distintos estados para controlar el flujo del juego: una pantalla de inicio, una pantalla de juego, una pantalla de victoria y una pantalla de derrota.
+
+¿Qué se ve en pantalla?
+- Pantalla de inicio con botón START.
+- Marcianos moviéndose por el escenario.
+- Contador de marcianos eliminados.
+- Temporizador de 30 segundos.
+- Pantalla de victoria.
+- Pantalla de derrota.
+- Webcam que aparece únicamente al finalizar la partida.
+
+¿Qué elementos visuales aparecen?
+- Marcianos representados mediante un emoji.
+- Botón de inicio.
+- Contador.
+- Temporizador.
+- Pantallas de victoria y derrota.
+- Webcam.
+
+¿Qué inputs utiliza?
+- Clic del mouse para iniciar el juego.
+- Clic del mouse para eliminar los marcianos.
+
+
+¿Qué outputs genera?
+- Movimiento continuo de los marcianos.
+- Cambio progresivo del tamaño de los marcianos.
+- Actualización del contador.
+- Actualización del temporizador.
+- Cambio de estados.
+- Aparición de la webcam al finalizar la partida.
+
+
+* Descripción conceptual
+
+Idea central:
+  El proyecto busca representar un juego de arcade sencillo donde el jugador debe reaccionar rápidamente antes de que el tiempo termine.
+La dificultad aumenta de forma progresiva gracias a la disminución del tamaño de los marcianos, obligando al jugador a mejorar su precisión durante la partida.
+
+Corriente o referente de diseño:
+  El proyecto toma como referencia los videojuegos arcade clásicos, donde el jugador debe reaccionar rápidamente frente a objetivos en movimiento utilizando mecánicas simples y una dificultad progresiva.
+
+Principio de diseño explorado:
+  Se explora el principio de progresión de dificultad, donde el sistema modifica continuamente las condiciones del juego para aumentar el desafío del usuario.
+
+Referentes
+- Videojuegos arcade clásicos.
+- Estética basada en íconos y emojis.
+- Interfaces simples de videojuegos retro.
+
+Sistema computacional
+- Inputs
+- Clic sobre el botón START.
+- Clic sobre los marcianos.
+
+Procesos
+- Generación aleatoria de posiciones.
+- Generación aleatoria de velocidades.
+- Movimiento de los marcianos.
+- Rebote en los bordes.
+- Disminución progresiva del tamaño mediante map().
+- Cálculo del tiempo mediante millis().
+- Detección de colisiones con el mouse.
+- Cambio entre estados del sistema.
+
+Estados
+- Estado 0: Menú.
+- Estado 1: Juego.
+- Estado 2: Victoria.
+- Estado 3: Derrota.
+
+Eventos
+- Inicio del juego.
+- Eliminación de un marciano.
+- Fin del tiempo.
+- Eliminación de todos los marcianos.
+
+Outputs
+- Movimiento de personajes.
+- Cambio del tamaño de los marcianos.
+- Contador actualizado.
+- Temporizador.
+- Pantalla de victoria.
+- Pantalla de derrota.
+- Activación de la webcam.
+
+
+* Explicación de la interacción
+1. El usuario inicia la partida presionando el botón START.
+2. Una vez iniciado el juego, debe hacer clic sobre los marcianos para eliminarlos antes de que termine el tiempo.
+3. Mientras el tiempo disminuye, el tamaño de los marcianos también disminuye, aumentando la dificultad del juego.
+4. Si elimina los seis marcianos antes de que termine el tiempo, el sistema cambia al estado de victoria.
+5. Si el tiempo llega a cero antes de eliminar a todos los marcianos, el sistema cambia al estado de derrota.
+6. En ambos casos se activa la webcam como respuesta final del sistema.
+
+* Recursos multimedia utilizados
+
+Tipo de recurso
+- Webcam.
+
+Función dentro del proyecto
+  La webcam se activa únicamente cuando el juego termina, permitiendo mostrar la reacción del jugador frente al resultado obtenido. De esta forma, cumple una función dentro de la lógica del sistema y no únicamente decorativa.
