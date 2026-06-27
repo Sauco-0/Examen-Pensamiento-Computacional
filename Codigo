@@ -1,0 +1,391 @@
+// ===================== Variables =====================
+
+// Estado del juego
+let estado = 0;
+
+// Marcianos eliminados
+let eliminados = 0;
+
+// Guardar inicio de partida
+let tiempoInicio = 0;
+
+// Temporizador
+let tiempo = 15;
+
+// Tamaño de 👾
+let tamaño = 40;
+
+// Webcam
+let camara;
+
+// Los 👾
+let marcianos = [];
+
+
+
+// ===================== Setup =====================
+function setup() {
+
+  // Lienzo del canvas
+  createCanvas(600, 400);
+
+  // Activa webcam
+  camara = createCapture(VIDEO);
+  
+  // Tamaño de la webcam
+  camara.size(500, 200);
+
+  // Posicion de la webcam
+  camara.position(50, 110);
+
+  // Ocultar webcam
+  camara.hide();
+
+  // Crear 6 👾
+  for (let i = 0; i < 6; i++) {
+    marcianos[i] = {
+
+      // Posicion
+      x: random(width),
+      y: random(height),
+
+      // Velocidad
+      speedX: random(-4, 4),
+      speedY: random(-4, 4),
+
+      // Emoji de marciano
+      emoji: "👾",
+
+      // Indica si 👾 esta vivo
+      alive: true
+
+    };
+
+  }
+}
+
+
+
+// ===================== Funcion propia =====================
+
+// Dibuja boton "Start"
+function dibujarBoton() {
+
+  // Centrar texto en el boton
+  textAlign(CENTER, CENTER);
+
+  // Tamaño de texto START
+  textSize(32);
+
+  // Sin relleno
+  noFill();
+
+  // Color de borde del boton
+  stroke(255);
+
+  // Rectangulo de bordes redondeados
+  rect(200, 190, 200, 80, 10);
+
+  // Cambia color de texto a negro
+  fill(0);
+
+  // Texto "Start"
+  text("START", 300, 235);
+
+}
+
+// Dibuja contador y temporizador
+function mostrarHUD() {
+
+  // Color de texto
+  fill(255);
+
+  // Tamaño del texto
+  textSize(20);
+
+  // Alinear a la izquierda
+  textAlign(LEFT);
+
+  // Contador de 👾 eliminados
+  text(
+    "👾 Eliminados: " + eliminados,
+    20,
+    30
+  );
+
+  // Alinear temporizador a la derecha
+  textAlign(RIGHT);
+
+  // Mostrar tiempo restante
+  text(
+    "⏱ Tiempo: " + tiempo,
+    width - 20,
+    30
+  );
+
+}
+// ===================== Draw =====================
+function draw() {
+
+  // Estado 0 = Menu
+  if (estado == 0) {
+
+    // Color de fondo
+    background(20);
+
+    // Color de texto
+    fill(255);
+    noStroke();
+    
+    // Centrar textos del Menu
+    textAlign(CENTER, CENTER);
+    
+    // Tamaño de Titulo
+    textSize(38);
+    
+    // Escribir Titulo
+    text("PÍU PÍU", width/2, 120);
+    
+    // Tamaño de descripcion
+    textSize(18);
+    
+    // Escribir descripcion
+    text(
+  "Elimina a todos los marcianos\nantes de que el tiempo termine.",
+  width/2,
+  340
+);
+
+    
+    // Funcion de dibujar boton
+    dibujarBoton();
+
+  }
+
+  // Estado 1 = Juego
+  if (estado == 1) {
+
+    // Color de fondo
+    background(0);
+
+    // Calcula tiempo restante
+    tiempo = 15 - int((millis() - tiempoInicio) / 1000);
+
+    // Si el numero es menor a 0 regresa al 0
+    if (tiempo < 0) {
+
+      // Mantener tiempo en 0
+      tiempo = 0;
+
+    }
+
+    // Si el tiempo es igual a 0...
+    if (tiempo == 0) {
+      
+    // ...Cambia a Estado 3 Perder
+    estado = 3;
+
+}
+
+    // Cambia tamaño de 👾 segun el tiempo restante
+    tamaño = map(tiempo, 15, 0, 40, 10);
+
+    // Centra el emoji 👾
+    textAlign(CENTER, CENTER);
+
+    // Tamaño de 👾
+    textSize(tamaño);
+
+    // Recorre array de marcianos
+    for (let i = 0; i < marcianos.length; i++) {
+
+      // Verifica 👾 vivos
+      if (marcianos[i].alive == true) {
+
+        // Actualiza posicion de 👾 segun velocidad
+        marcianos[i].x += marcianos[i].speedX;
+        marcianos[i].y += marcianos[i].speedY;
+
+        // Rebote horizontal en borde derecho
+        if (marcianos[i].x > width) {
+
+          // Invierte direccion de movimiento en X
+          marcianos[i].speedX = marcianos[i].speedX * -1;
+        }
+
+        // Rebote horizontal en borde izquierdo
+        if (marcianos[i].x < 0) {
+
+          // Invierte direccion de movimiento en X
+          marcianos[i].speedX = marcianos[i].speedX * -1;
+        }
+
+        // Rebote vertical en borde inferior
+        if (marcianos[i].y > height) {
+
+          // Invierte direccion de movimiento en Y
+          marcianos[i].speedY = marcianos[i].speedY * -1;
+        }
+      
+      // Rebote vertical en borde superior
+        if (marcianos[i].y < 0) {
+          
+          // Invierte direccion de movimiento en Y
+          marcianos[i].speedY = marcianos[i].speedY * -1;
+        }
+
+        // Dibujar marciano
+        text(
+          marcianos[i].emoji,
+          marcianos[i].x,
+          marcianos[i].y
+        );
+
+      }
+
+      // Cambiar 👾 por ❌ si se elimina
+      else {
+
+        text(
+          "❌",
+          marcianos[i].x,
+          marcianos[i].y
+        );
+
+      }
+
+    }
+
+    // Verifica que los 6 👾 hayan sido eliminados
+    if (eliminados == 6) {
+
+      // Estado = 2 Victoria
+      estado = 2;
+
+    }
+
+    // Funcion contador y temporizador
+    mostrarHUD();
+    
+
+  }
+
+  // Estado 2 = Victoria
+  if (estado == 2) {
+  
+    // Muestra webcam
+    camara.show();
+
+    // Color de fondo
+    background(0);
+
+    // Color de texto
+    fill(255);
+
+    // Centrar texto
+    textAlign(CENTER, CENTER);
+    
+    // Tamaño texto titulo
+    textSize(40);
+
+    // Texto GANASTE
+    text("¡GANASTE!", width / 2, 75);
+    
+    // Tamaño texto descripcio
+    textSize(20);
+
+    // Texto descripcion
+    text("Has salvado la Tierra 👾", width / 2, 370);
+
+  }
+
+  // Estado 3 = Derrota
+  if (estado == 3) {
+    
+    // Muestra camara
+    camara.show();
+
+    // Color fondo
+    background(0);
+    
+    // Color texto
+    fill(255);
+    
+    // Centrar texto
+    textAlign(CENTER, CENTER);
+    
+    // Tamaño texto titulo
+    textSize(40);
+
+    // Texto PERDISTE
+    text("PERDISTE", width / 2, 75);
+
+  // Tamaño texto descripcion
+  textSize(20);
+
+    // Texto descripcion
+    text("Los marcianos escaparon...", width / 2, 370);
+
+}
+
+}
+
+
+
+// ===================== Evento =====================
+
+// Se ejecuta al hacer click
+function mousePressed() {
+
+  // Verifica si esta en Menu
+  if (estado == 0) {
+
+    // Verifica si se hizo click en el boton "Start"
+    if (
+  mouseX > 200 &&
+  mouseX < 400 &&
+  mouseY > 190 &&
+  mouseY < 270
+    ) {
+
+      // Cambia a estado Inicio de Juego
+      estado = 1;
+
+      // Guarda inicio de partida
+      tiempoInicio = millis();
+
+    }
+
+  }
+
+  // Verifica si Inicio de Juego esta en ejecucion
+  if (estado == 1) {
+
+    // Recorre los marcianos
+    for (let i = 0; i < marcianos.length; i++) {
+
+      // Verifica si 👾 esta vivo
+      if (
+        marcianos[i].alive == true &&
+
+        // Verifica Area para hacer click sobre 👾
+        mouseX > marcianos[i].x - tamaño/2 &&
+        mouseX < marcianos[i].x + tamaño/2 &&
+        mouseY > marcianos[i].y - tamaño/2 &&
+        mouseY < marcianos[i].y + tamaño/2
+
+      ) {
+
+        // Elimina a 👾
+        marcianos[i].alive = false;
+
+        // Aumenta el numero del contador
+        eliminados = eliminados + 1;
+
+      }
+
+    }
+
+  }
+
+}
